@@ -1,5 +1,4 @@
-from app import app
+from flask import jsonify
 
-@app.route("/transaction/add", methods=["POST"])
-def create():
-    return "Create a Transaction"
+def create_transaction():
+    return jsonify({"message": "CREATE TRANSACTION", "status": 201}),201

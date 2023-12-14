@@ -1,5 +1,4 @@
-from app import app
+from flask import jsonify
 
-@app.route("/account/add", methods=["POST"])
-def create():
-    return "Create an Account"
+def create_account():
+    return jsonify({"message": "CREATE ACCOUNT", "status": 201}),201
