@@ -1,4 +1,4 @@
 from flask_migrate import Migrate
-from ext.database import db
+from app.ext.database import db
 
 migrate = Migrate(db=db)
