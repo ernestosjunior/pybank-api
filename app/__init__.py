@@ -1,7 +1,5 @@
 from flask import Flask
-from app.ext.config import Config
-from app.ext.database import db
-from app.ext.migrate import migrate
+from app.ext import Config, db, migrate
 
 app = Flask(__name__)
 
