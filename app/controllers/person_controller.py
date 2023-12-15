@@ -22,6 +22,6 @@ def create_person():
         db.session.commit()
         response_data = schema.dump(person_created)
         del response_data["password"]
-        return response_data, 201 
+        return response_data, 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400

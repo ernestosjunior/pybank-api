@@ -1,0 +1,2 @@
+[tool.black.general]
+blank-lines = 1

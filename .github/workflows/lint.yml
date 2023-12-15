@@ -1,4 +1,4 @@
-name: Lint and Format
+name: Lint
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  lint-and-format:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,10 +20,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: |
-          pip install flake8 black
+          pip install flake8
 
-      - name: ✔️ Lint and Format
+      - name: ✔️ Lint
         run: |
-          black .
           flake8
         
