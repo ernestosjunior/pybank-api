@@ -8,4 +8,5 @@ app.config.from_object(Config)
 db.init_app(app)
 migrate.init_app(app, db)
 
-from app.models import *
+from app import models
+from app import routes

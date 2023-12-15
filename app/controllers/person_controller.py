@@ -1,5 +1,5 @@
-from flask import jsonify
-
+from flask import jsonify, request
 
 def create_person():
-    return jsonify({"message": "CREATE PERSON", "status": 201}), 201
+    person = request.get_json()
+    return jsonify(person), 201
