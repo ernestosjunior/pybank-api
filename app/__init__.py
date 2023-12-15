@@ -1,5 +1,6 @@
 from flask import Flask
-from app.ext import Config, db, migrate
+from .ext import db, migrate
+from .config import Config
 
 app = Flask(__name__)
 
@@ -9,4 +10,4 @@ db.init_app(app)
 migrate.init_app(app, db)
 
 from app.models import *
-from app import routes
+from app.routes import *

@@ -1,5 +1,4 @@
-from .config import Config
-from .database import db
 from .migrate import migrate
+from .database import db
 
-__all__ = ["Config", "db", "migrate"]
+__all__ = ["migrate", "db"]
