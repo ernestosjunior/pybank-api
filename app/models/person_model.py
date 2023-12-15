@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 
 class Person(db.Model):
@@ -8,5 +9,6 @@ class Person(db.Model):
     birth_date = db.Column(db.Date, nullable=False)
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     account = db.relationship("Account", uselist=False, backref="person", lazy=True)
