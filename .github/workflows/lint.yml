@@ -24,5 +24,6 @@ jobs:
 
       - name: ✔️ Lint and Format
         run: |
-          flake8
           black .
+          flake8
+        
