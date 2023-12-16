@@ -4,6 +4,7 @@ from marshmallow import ValidationError
 from app.models import Person
 from app.interfaces.account import AccountInput
 from app.services.account import create_account_for_person
+from pymysql.err import IntegrityError
 
 
 def create_account():
@@ -23,6 +24,9 @@ def create_account():
 
     except ValidationError as ve:
         return jsonify({"error": ve.messages}), 422
+
+    except IntegrityError as ie:
+        return jsonify({"error": "User already exists."}), 409
 
     except Exception as e:
         return (
