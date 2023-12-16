@@ -16,6 +16,7 @@ class Account(db.Model):
     type = db.Column(db.Enum(AccountTypeEnum), default=AccountTypeEnum.CURRENT)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    transactions = db.relationship("Transaction", backref="account", lazy=True)
     person_id = db.Column(
         db.Integer, db.ForeignKey("person.id"), unique=True, nullable=False
     )
