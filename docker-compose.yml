@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+
+  development:
+    build:
+      context: .
+      target: development
+    environment:
+      - FLASK_ENV=development
+    ports:
+      - "3333:3333"
+    volumes:
+      - .:/app
+    command: sh -c "flask db upgrade && python3 main.py"
+    depends_on:
+      - db
+    env_file:
+      - .env 
+
+  # production:
+  #   build:
+  #     context: .
+  #     target: production
+  #   ports:
+  #     - "8000:8000"
+  #   command: sh -c "flask db upgrade"
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env 
+
