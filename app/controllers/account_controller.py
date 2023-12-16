@@ -1,8 +1,9 @@
 from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity
-from app.models import Person, Account
+from marshmallow import ValidationError
+from app.models import Person
 from app.interfaces.account import AccountInput
-from app import db
+from app.services.account import create_account_for_person
 
 
 def create_account():
@@ -16,12 +17,20 @@ def create_account():
         if not person:
             return jsonify({"error": "User not found."}), 404
 
-        account_created = Account(
-            person_id=person.id, status=account.get("status"), type=account.get("type")
-        )
-        db.session.add(account_created)
-        db.session.commit()
+        account_created = create_account_for_person(person.id, account)
         response_data = schema.dump(account_created)
         return response_data, 201
+
+    except ValidationError as ve:
+        return jsonify({"error": ve.messages}), 422
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred while creating the account.",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )
