@@ -1,29 +1,22 @@
 from flask import jsonify, request
-from app.interfaces.person import PersonInput
-from app.utils.hash import generate_hash
-from app.models.person_model import Person
+from app.interfaces.person import PersonSchema
+from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
-from app import db
+from app.services.person import create_person_profile
 
 
 def create_person():
-    schema = PersonInput()
+    schema = PersonSchema()
     body = request.get_json()
     try:
         person = schema.load(body)
-        password_hash = generate_hash(person.get("password"))
-        person_created = Person(
-            name=person.get("name"),
-            cpf=person.get("cpf"),
-            birth_date=person.get("birth_date"),
-            email=person.get("email"),
-            password=password_hash,
-        )
-        db.session.add(person_created)
-        db.session.commit()
+        person_created = create_person_profile(person)
         response_data = schema.dump(person_created)
         del response_data["password"]
         return response_data, 201
+
+    except ValidationError as ve:
+        return jsonify({"error": "Validation error.", "details": ve.messages}), 422
 
     except IntegrityError as ie:
         return jsonify({"error": "User already exists.", "details": str(ie)}), 409

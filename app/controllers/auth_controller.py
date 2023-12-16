@@ -1,13 +1,13 @@
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token
-from app.interfaces.auth import LoginInput
+from app.interfaces.auth import LoginSchema
 from app.utils.hash import check_hash
 from app import db
 from app.models import Person
 
 
 def login():
-    schema = LoginInput()
+    schema = LoginSchema()
     body = request.get_json()
     try:
         login_data = schema.load(body)

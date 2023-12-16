@@ -2,13 +2,13 @@ from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity
 from marshmallow import ValidationError
 from app.models import Person
-from app.interfaces.account import AccountInput
+from app.interfaces.account import AccountSchema
 from app.services.account import create_account_for_person
 from sqlalchemy.exc import IntegrityError
 
 
 def create_account():
-    schema = AccountInput()
+    schema = AccountSchema()
     body = request.get_json()
     try:
         account = schema.load(body)
@@ -23,7 +23,7 @@ def create_account():
         return response_data, 201
 
     except ValidationError as ve:
-        return jsonify({"error": ve.messages}), 422
+        return jsonify({"error": "Validation error.", "details": ve.messages}), 422
 
     except IntegrityError as ie:
         return jsonify({"error": "User already exists.", "details": str(ie)}), 409
