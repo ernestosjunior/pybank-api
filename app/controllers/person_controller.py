@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app.interfaces.person import PersonSchema
+from app.schemas.person import PersonSchema
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from app.services.person import create_person_profile

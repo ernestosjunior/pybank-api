@@ -1,10 +1,10 @@
 from flask import jsonify, request
-from flask_jwt_extended import get_jwt_identity
 from marshmallow import ValidationError
-from app.models import Person
-from app.interfaces.account import AccountSchema
+from app.exc import NotFoundException, NotAllowedException
+from app.schemas.account import AccountSchema
 from app.services.account import create_account_for_person
 from sqlalchemy.exc import IntegrityError
+from app.services.auth import check_person
 
 
 def create_account():
@@ -12,15 +12,17 @@ def create_account():
     body = request.get_json()
     try:
         account = schema.load(body)
-        current_user = get_jwt_identity()
-        person = Person.query.filter_by(email=current_user).first()
-
-        if not person:
-            return jsonify({"error": "User not found."}), 404
+        person = check_person(account)
 
         account_created = create_account_for_person(person.id, account)
         response_data = schema.dump(account_created)
         return response_data, 201
+
+    except NotFoundException as nfe:
+        return jsonify({"error": nfe.message}), 404
+
+    except NotAllowedException as nae:
+        return jsonify({"error": nae.message}), 403
 
     except ValidationError as ve:
         return jsonify({"error": "Validation error.", "details": ve.messages}), 422

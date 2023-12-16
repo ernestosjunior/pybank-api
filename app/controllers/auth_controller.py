@@ -1,8 +1,7 @@
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token
-from app.interfaces.auth import LoginSchema
+from app.schemas.auth import LoginSchema
 from app.utils.hash import check_hash
-from app import db
 from app.models import Person
 
 
@@ -17,7 +16,7 @@ def login():
             is_valid_password = check_hash(person.password, login_data.get("password"))
 
             if is_valid_password:
-                access_token = create_access_token(identity=person.email)
+                access_token = create_access_token(identity=person.id)
                 return (
                     jsonify(
                         id=person.id,
