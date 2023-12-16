@@ -2,7 +2,7 @@ from flask import jsonify, request
 from app.interfaces.person import PersonInput
 from app.utils.hash import generate_hash
 from app.models.person_model import Person
-from pymysql.err import IntegrityError
+from sqlalchemy.exc import IntegrityError
 from app import db
 
 

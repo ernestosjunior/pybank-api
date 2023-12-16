@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 from app.models import Person
 from app.interfaces.account import AccountInput
 from app.services.account import create_account_for_person
-from pymysql.err import IntegrityError
+from sqlalchemy.exc import IntegrityError
 
 
 def create_account():
