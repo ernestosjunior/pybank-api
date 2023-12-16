@@ -10,7 +10,7 @@ app.add_url_rule("/login", "login", auth_controller.login, methods=["POST"])
 app.add_url_rule(
     "/person",
     "create_person",
-    jwt_required()(person_controller.create_person),
+    person_controller.create_person,
     methods=["POST"],
 )
 
