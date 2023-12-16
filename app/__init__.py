@@ -1,10 +1,12 @@
 from flask import Flask
 from .ext import db, migrate, jwt
-from .config import Config
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-app.config.from_object(Config)
+load_dotenv()
+
+app.config.from_pyfile("config.py")
 
 jwt.init_app(app)
 
