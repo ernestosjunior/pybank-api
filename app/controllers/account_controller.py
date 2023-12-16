@@ -26,7 +26,7 @@ def create_account():
         return jsonify({"error": ve.messages}), 422
 
     except IntegrityError as ie:
-        return jsonify({"error": "User already exists."}), 409
+        return jsonify({"error": "User already exists.", "details": str(ie)}), 409
 
     except Exception as e:
         return (
