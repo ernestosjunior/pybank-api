@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  production:
+    build:
+      context: .
+      target: production
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+    ports:
+      - "8000:8000"
+    command: sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:8000 app:app"
+    depends_on:
+      - db
+    env_file:
+      - .env 
+
