@@ -9,6 +9,15 @@ from app.services.account import (
 )
 from sqlalchemy.exc import IntegrityError
 from app.services.auth import check_person
+from app.utils.http_status import (
+    HTTP_STATUS_CREATED,
+    HTTP_STATUS_NOT_FOUND,
+    HTTP_STATUS_NOT_ALLOWED,
+    HTTP_STATUS_OK,
+    HTTP_STATUS_VALIDATION_ERROR,
+    HTTP_STATUS_CONFLICT,
+    HTTP_STATUS_INTERNAL_SERVER_ERROR,
+)
 
 
 def create_account():
@@ -20,19 +29,25 @@ def create_account():
 
         account_created = create_account_for_person(person.id, account)
         response_data = schema.dump(account_created)
-        return response_data, 201
+        return response_data, HTTP_STATUS_CREATED
 
     except NotFoundException as nfe:
-        return jsonify({"error": nfe.message}), 404
+        return jsonify({"error": nfe.message}), HTTP_STATUS_NOT_FOUND
 
     except NotAllowedException as nae:
-        return jsonify({"error": nae.message}), 405
+        return jsonify({"error": nae.message}), HTTP_STATUS_NOT_ALLOWED
 
     except ValidationError as ve:
-        return jsonify({"error": "Validation error.", "details": ve.messages}), 422
+        return (
+            jsonify({"error": "Validation error.", "details": ve.messages}),
+            HTTP_STATUS_VALIDATION_ERROR,
+        )
 
     except IntegrityError as ie:
-        return jsonify({"error": "User already exists.", "details": str(ie)}), 409
+        return (
+            jsonify({"error": "User already exists.", "details": str(ie)}),
+            HTTP_STATUS_CONFLICT,
+        )
 
     except Exception as e:
         return (
@@ -42,14 +57,14 @@ def create_account():
                     "details": str(e),
                 }
             ),
-            500,
+            HTTP_STATUS_INTERNAL_SERVER_ERROR,
         )
 
 
 def get_balance(account_id):
     try:
         account = check_account(account_id)
-        return jsonify({"balance": account.balance}), 200
+        return jsonify({"balance": account.balance}), HTTP_STATUS_OK
     except Exception as e:
         return (
             jsonify(
@@ -58,7 +73,7 @@ def get_balance(account_id):
                     "details": str(e),
                 }
             ),
-            500,
+            HTTP_STATUS_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -67,7 +82,7 @@ def block_account(account_id: int):
     try:
         account = check_account(account_id)
         update_account_status(account, False)
-        return schema.dump(account), 200
+        return schema.dump(account), HTTP_STATUS_OK
     except Exception as e:
         return (
             jsonify(
@@ -76,5 +91,5 @@ def block_account(account_id: int):
                     "details": str(e),
                 }
             ),
-            500,
+            HTTP_STATUS_INTERNAL_SERVER_ERROR,
         )
