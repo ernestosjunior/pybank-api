@@ -29,7 +29,7 @@ def create_transaction():
         return jsonify({"error": nfe.message}), 404
 
     except NotAllowedException as nae:
-        return jsonify({"error": nae.message}), 403
+        return jsonify({"error": nae.message}), 405
 
     except ValidationError as ve:
         return jsonify({"error": "Validation error.", "details": ve.messages}), 422
