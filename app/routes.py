@@ -29,3 +29,10 @@ app.add_url_rule(
     jwt_required()(transaction_controller.create_transaction),
     methods=["POST"],
 )
+
+app.add_url_rule(
+    "/accounts/balance/<int:account_id>",
+    "get_balance",
+    jwt_required()(account_controller.get_balance),
+    methods=["GET"],
+)

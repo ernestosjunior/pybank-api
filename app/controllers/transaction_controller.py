@@ -1,8 +1,7 @@
 from flask import jsonify, request
 from app.schemas.transaction import TransactionSchema
-from app.services.auth import check_account
 from app.services.transaction import add_transaction
-from app.services.account import update_account_balance
+from app.services.account import update_account_balance, check_account
 from app.exc import NotFoundException, NotAllowedException
 from marshmallow import ValidationError
 
@@ -12,7 +11,7 @@ def create_transaction():
     body = request.get_json()
     try:
         transaction = schema.load(body)
-        account = check_account(transaction)
+        account = check_account(transaction.get("id"))
 
         created_transaction = add_transaction(transaction)
         update_account_balance(account, transaction)

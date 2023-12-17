@@ -2,7 +2,7 @@ from flask import jsonify, request
 from marshmallow import ValidationError
 from app.exc import NotFoundException, NotAllowedException
 from app.schemas.account import AccountSchema
-from app.services.account import create_account_for_person
+from app.services.account import create_account_for_person, check_account
 from sqlalchemy.exc import IntegrityError
 from app.services.auth import check_person
 
@@ -30,6 +30,22 @@ def create_account():
     except IntegrityError as ie:
         return jsonify({"error": "User already exists.", "details": str(ie)}), 409
 
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred while creating the account.",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )
+
+
+def get_balance(account_id):
+    try:
+        account = check_account(account_id)
+        return jsonify({"balance": account.balance}), 200
     except Exception as e:
         return (
             jsonify(

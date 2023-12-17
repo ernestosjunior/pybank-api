@@ -1,5 +1,7 @@
 from app.models import Account
 from app import db
+from flask_jwt_extended import get_jwt_identity
+from app.exc import NotFoundException, NotAllowedException
 
 
 def create_account_for_person(person_id: str, account_data):
@@ -16,3 +18,20 @@ def create_account_for_person(person_id: str, account_data):
 def update_account_balance(account, transaction):
     account.balance += float(transaction.get("value"))
     db.session.commit()
+
+
+def check_account(current_account: int):
+    current_user_id = get_jwt_identity()
+    account = Account.query.filter_by(person_id=current_user_id).first()
+
+    if not account:
+        raise NotFoundException("Account not found.")
+
+    is_current_account = account.id == current_account
+
+    if not is_current_account:
+        raise NotAllowedException(
+            "It is not possible to create an transaction for another account."
+        )
+
+    return account

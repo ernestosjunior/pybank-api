@@ -18,20 +18,3 @@ def check_person(current_person):
         )
 
     return person
-
-
-def check_account(current_account):
-    current_user_id = get_jwt_identity()
-    account = Account.query.filter_by(person_id=current_user_id).first()
-
-    if not account:
-        raise NotFoundException("Account not found.")
-
-    is_current_account = account.id == current_account.get("account_id")
-
-    if not is_current_account:
-        raise NotAllowedException(
-            "It is not possible to create an transaction for another account."
-        )
-
-    return account
