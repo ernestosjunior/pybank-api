@@ -36,3 +36,10 @@ app.add_url_rule(
     jwt_required()(account_controller.get_balance),
     methods=["GET"],
 )
+
+app.add_url_rule(
+    "/accounts/block/<int:account_id>",
+    "block_account",
+    jwt_required()(account_controller.block_account),
+    methods=["PATCH"],
+)

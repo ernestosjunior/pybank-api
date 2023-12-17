@@ -22,4 +22,12 @@ def create_person():
         return jsonify({"error": "User already exists.", "details": str(ie)}), 409
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred.",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )

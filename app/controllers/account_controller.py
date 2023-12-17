@@ -2,7 +2,11 @@ from flask import jsonify, request
 from marshmallow import ValidationError
 from app.exc import NotFoundException, NotAllowedException
 from app.schemas.account import AccountSchema
-from app.services.account import create_account_for_person, check_account
+from app.services.account import (
+    create_account_for_person,
+    check_account,
+    update_account_status,
+)
 from sqlalchemy.exc import IntegrityError
 from app.services.auth import check_person
 
@@ -34,7 +38,7 @@ def create_account():
         return (
             jsonify(
                 {
-                    "error": "An error occurred while creating the account.",
+                    "error": "An error occurred.",
                     "details": str(e),
                 }
             ),
@@ -50,7 +54,25 @@ def get_balance(account_id):
         return (
             jsonify(
                 {
-                    "error": "An error occurred while creating the account.",
+                    "error": "An error occurred.",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )
+
+
+def block_account(account_id: int):
+    schema = AccountSchema()
+    try:
+        account = check_account(account_id)
+        update_account_status(account, False)
+        return schema.dump(account), 200
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred.",
                     "details": str(e),
                 }
             ),

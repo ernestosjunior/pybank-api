@@ -29,4 +29,12 @@ def create_transaction():
         return jsonify({"error": "Validation error.", "details": ve.messages}), 422
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred.",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )

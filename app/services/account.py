@@ -2,9 +2,11 @@ from app.models import Account
 from app import db
 from flask_jwt_extended import get_jwt_identity
 from app.exc import NotFoundException, NotAllowedException
+from app.schemas.account import AccountSchema
+from app.schemas.transaction import TransactionSchema
 
 
-def create_account_for_person(person_id: str, account_data):
+def create_account_for_person(person_id: str, account_data: AccountSchema):
     account_created = Account(
         person_id=person_id,
         status=account_data.get("status"),
@@ -15,7 +17,7 @@ def create_account_for_person(person_id: str, account_data):
     return account_created
 
 
-def update_account_balance(account, transaction):
+def update_account_balance(account: Account, transaction: TransactionSchema):
     account.balance += float(transaction.get("value"))
     db.session.commit()
 
@@ -35,3 +37,8 @@ def check_account(current_account: int):
         )
 
     return account
+
+
+def update_account_status(account: Account, status: bool):
+    account.status = status
+    db.session.commit()
