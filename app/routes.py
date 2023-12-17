@@ -31,6 +31,13 @@ app.add_url_rule(
 )
 
 app.add_url_rule(
+    "/transactions/<int:account_id>",
+    "get_all_by_account_id",
+    jwt_required()(transaction_controller.get_all_by_account_id),
+    methods=["GET"],
+)
+
+app.add_url_rule(
     "/accounts/balance/<int:account_id>",
     "get_balance",
     jwt_required()(account_controller.get_balance),

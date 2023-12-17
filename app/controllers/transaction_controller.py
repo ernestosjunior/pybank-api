@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from app.schemas.transaction import TransactionSchema
-from app.services.transaction import add_transaction
+from app.services.transaction import add_transaction, get_all_transactions_by_account_id
 from app.services.account import update_account_balance, check_account
 from app.exc import NotFoundException, NotAllowedException
 from marshmallow import ValidationError
@@ -34,6 +34,22 @@ def create_transaction():
     except ValidationError as ve:
         return jsonify({"error": "Validation error.", "details": ve.messages}), 422
 
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred.",
+                    "details": str(e),
+                }
+            ),
+            500,
+        )
+
+
+def get_all_by_account_id(account_id: int):
+    try:
+        transactions = get_all_transactions_by_account_id(account_id)
+        return jsonify(transactions), 200
     except Exception as e:
         return (
             jsonify(
