@@ -9,7 +9,7 @@ from flask_jwt_extended import jwt_required
 app.add_url_rule("/login", "login", auth_controller.login, methods=["POST"])
 
 app.add_url_rule(
-    "/person",
+    "/persons",
     "create_person",
     person_controller.create_person,
     methods=["POST"],
@@ -17,15 +17,15 @@ app.add_url_rule(
 
 # Authenticated routes
 app.add_url_rule(
-    "/account",
+    "/accounts",
     "create_account",
     jwt_required()(account_controller.create_account),
     methods=["POST"],
 )
 
 app.add_url_rule(
-    "/transaction/credit",
-    "create__debit_transaction",
-    jwt_required()(transaction_controller.create__debit_transaction),
+    "/transactions",
+    "create_transaction",
+    jwt_required()(transaction_controller.create_transaction),
     methods=["POST"],
 )

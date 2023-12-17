@@ -14,4 +14,5 @@ def create_account_for_person(person_id: str, account_data):
 
 
 def update_account_balance(account, transaction):
-    newBalance = account.balance
+    account.balance += float(transaction.get("value"))
+    db.session.commit()
