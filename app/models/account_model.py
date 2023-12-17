@@ -1,9 +1,9 @@
-from app import db
 import enum
 from datetime import datetime
+from app import db
 
 
-class AccountTypeEnum(enum.Enum):
+class AccountType(enum.Enum):
     CURRENT = "current"
     SAVINGS = "savings"
 
@@ -13,7 +13,7 @@ class Account(db.Model):
     balance = db.Column(db.Float, default=0)
     daily_withdrawal_limit = db.Column(db.Float, default=1000)
     status = db.Column(db.Boolean, default=True)
-    type = db.Column(db.Enum(AccountTypeEnum), default=AccountTypeEnum.CURRENT)
+    type = db.Column(db.Enum(AccountType), default=AccountType.CURRENT)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     transactions = db.relationship("Transaction", backref="account", lazy=True)

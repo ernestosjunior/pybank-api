@@ -1,6 +1,8 @@
 from flask import Flask
-from .ext import db, migrate, jwt
 from dotenv import load_dotenv
+from app.models import *
+from app.routes import *
+from .ext import db, migrate, jwt
 
 app = Flask(__name__)
 
@@ -12,6 +14,3 @@ jwt.init_app(app)
 
 db.init_app(app)
 migrate.init_app(app, db)
-
-from app.models import *
-from app.routes import *

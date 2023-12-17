@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields
-from app.models import AccountTypeEnum
+from app.models import AccountType
 
 
 class AccountSchema(Schema):
@@ -8,4 +8,4 @@ class AccountSchema(Schema):
     balance = fields.Float()
     daily_withdrawal_limit = fields.Float()
     status = fields.Boolean()
-    type = fields.Enum(AccountTypeEnum, required=True)
+    type = fields.Enum(AccountType, required=True)
