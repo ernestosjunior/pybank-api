@@ -2,7 +2,7 @@ from flask import jsonify, request
 from app.schemas.transaction import TransactionSchema
 from app.services.transaction import add_transaction, get_all_transactions_by_account_id
 from app.services.account import update_account_balance, check_account
-from app.exc import NotFoundException, NotAllowedException
+from app.exceptions import NotFoundException, NotAllowedException
 from marshmallow import ValidationError
 
 

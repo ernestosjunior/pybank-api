@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from marshmallow import ValidationError
-from app.exc import NotFoundException, NotAllowedException
+from app.exceptions import NotFoundException, NotAllowedException
 from app.schemas.account import AccountSchema
 from app.services.account import (
     create_account_for_person,

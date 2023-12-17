@@ -1,6 +1,6 @@
 from flask_jwt_extended import get_jwt_identity
 from app.models import Person
-from app.exc import NotFoundException, NotAllowedException
+from app.exceptions import NotFoundException, NotAllowedException
 
 
 def check_person(current_person) -> Person:

@@ -1,7 +1,7 @@
 from app.models import Account
 from flask_jwt_extended import get_jwt_identity
 from app import db
-from app.exc import NotFoundException, NotAllowedException
+from app.exceptions import NotFoundException, NotAllowedException
 from app.schemas.account import AccountSchema
 from app.schemas.transaction import TransactionSchema
 
