@@ -3,6 +3,11 @@ from flask_jwt_extended import create_access_token
 from app.schemas.auth import LoginSchema
 from app.utils.hash import check_hash
 from app.models import Person
+from app.utils.http_status import (
+    HTTP_STATUS_UNAUTHORIZED,
+    HTTP_STATUS_NOT_FOUND,
+    HTTP_STATUS_INTERNAL_SERVER_ERROR,
+)
 
 
 def login():
@@ -27,9 +32,12 @@ def login():
                     201,
                 )
             else:
-                return jsonify({"error": "Invalid credentials."}), 401
+                return (
+                    jsonify({"error": "Invalid credentials."}),
+                    HTTP_STATUS_UNAUTHORIZED,
+                )
         else:
-            return jsonify({"error": "User not found."}), 404
+            return jsonify({"error": "User not found."}), HTTP_STATUS_NOT_FOUND
 
     except Exception as e:
         return (
@@ -39,5 +47,5 @@ def login():
                     "details": str(e),
                 }
             ),
-            500,
+            HTTP_STATUS_INTERNAL_SERVER_ERROR,
         )
