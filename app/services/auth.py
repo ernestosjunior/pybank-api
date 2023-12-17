@@ -3,7 +3,7 @@ from app.models import Person, Account
 from app.exc import NotFoundException, NotAllowedException
 
 
-def check_person(current_person):
+def check_person(current_person) -> Person:
     current_user_id = get_jwt_identity()
     person = Person.query.filter_by(id=current_user_id).first()
 

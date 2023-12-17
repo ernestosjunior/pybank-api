@@ -6,7 +6,7 @@ from app.schemas.account import AccountSchema
 from app.schemas.transaction import TransactionSchema
 
 
-def create_account_for_person(person_id: str, account_data: AccountSchema):
+def create_account_for_person(person_id: str, account_data: AccountSchema) -> Account:
     account_created = Account(
         person_id=person_id,
         status=account_data.get("status"),
@@ -22,7 +22,7 @@ def update_account_balance(account: Account, transaction: TransactionSchema):
     db.session.commit()
 
 
-def check_account(current_account: int):
+def check_account(current_account: int) -> Account:
     current_user_id = get_jwt_identity()
     account = Account.query.filter_by(person_id=current_user_id).first()
 

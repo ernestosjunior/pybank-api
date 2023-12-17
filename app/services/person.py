@@ -3,7 +3,7 @@ from app import db
 from app.utils.hash import generate_hash
 
 
-def create_person_profile(person_data):
+def create_person_profile(person_data) -> Person:
     password_hash = generate_hash(person_data.get("password"))
     person_created = Person(
         name=person_data.get("name"),
