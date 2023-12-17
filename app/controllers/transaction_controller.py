@@ -23,9 +23,8 @@ def create_transaction():
         account = check_account(transaction.get("account_id"))
 
         value = transaction.get("value")
-        valid_daily_limit = value <= 0 and abs(value) <= account.daily_withdrawal_limit
 
-        if not valid_daily_limit:
+        if value < 0 and abs(value) > account.daily_withdrawal_limit:
             return (
                 jsonify({"error": "Amount exceeds daily withdrawal limit."}),
                 HTTP_STATUS_NOT_ALLOWED,
