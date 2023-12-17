@@ -24,7 +24,7 @@ services:
       - "3333:3333"
     volumes:
       - .:/app
-    command: sh -c "flask db upgrade && python3 main.py"
+    command: sh -c "flask db upgrade && python3 seed.py && python3 main.py"
     depends_on:
       - db
     env_file:

@@ -14,7 +14,7 @@ COPY . .
 
 ENV FLASK_ENV=development
 
-CMD ["sh", "-c", "flask db upgrade && python3 main.py"]
+CMD ["sh", "-c", "flask db upgrade && python3 seed.py && python3 main.py"]
 
 # Production
 FROM build AS production
@@ -25,4 +25,4 @@ RUN pip install gunicorn
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+CMD ["sh", "-c", "flask db upgrade && python3 seed.py && gunicorn --bind 0.0.0.0:8000 app:app"]
