@@ -4,7 +4,7 @@ from app import app
 bcrypt = Bcrypt(app)
 
 
-def generate_hash(password: str) -> str():
+def generate_hash(password: str) -> str:
     return bcrypt.generate_password_hash(password).decode("utf-8")
 
 
