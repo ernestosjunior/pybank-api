@@ -1,6 +1,7 @@
 from flask_bcrypt import Bcrypt
-from app import app
+from app import create_app
 
+app = create_app()
 bcrypt = Bcrypt(app)
 
 

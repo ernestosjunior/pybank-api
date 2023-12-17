@@ -13,10 +13,8 @@ def create_app():
     jwt.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
+
     return app
 
 
-app = create_app()
-
 from app.models import *
-from app.routes import *
