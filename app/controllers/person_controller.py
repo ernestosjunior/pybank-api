@@ -3,11 +3,15 @@ from app.schemas.person import PersonSchema
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError
 from app.services.person import create_person_profile
+from flask_jwt_extended import get_jwt_identity
+from app.exceptions import NotFoundException
+from app.services.auth import check_person
 from app.utils.http_status import (
     HTTP_STATUS_CREATED,
     HTTP_STATUS_VALIDATION_ERROR,
     HTTP_STATUS_CONFLICT,
     HTTP_STATUS_INTERNAL_SERVER_ERROR,
+    HTTP_STATUS_NOT_FOUND,
 )
 
 
@@ -33,6 +37,28 @@ def create_person():
             HTTP_STATUS_CONFLICT,
         )
 
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred.",
+                    "details": str(e),
+                }
+            ),
+            HTTP_STATUS_INTERNAL_SERVER_ERROR,
+        )
+
+
+def get_person():
+    schema = PersonSchema()
+    id = get_jwt_identity()
+    try:
+        person = check_person(id)
+        response = schema.dump(person)
+        del response["password"]
+        return response, 200
+    except NotFoundException as nfe:
+        return jsonify({"error": nfe.message}), HTTP_STATUS_NOT_FOUND
     except Exception as e:
         return (
             jsonify(

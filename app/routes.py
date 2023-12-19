@@ -17,6 +17,14 @@ def register_routes(app: Flask):
     )
 
     # Authenticated routes
+
+    app.add_url_rule(
+        "/person",
+        "get_person",
+        jwt_required()(person_controller.get_person),
+        methods=["GET"],
+    )
+
     app.add_url_rule(
         "/accounts",
         "create_account",

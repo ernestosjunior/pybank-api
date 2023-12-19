@@ -25,7 +25,7 @@ def create_account():
     body = request.get_json()
     try:
         account = schema.load(body)
-        person = check_person(account)
+        person = check_person(account.get("person_id"))
 
         account_created = create_account_for_person(person.id, account)
         response_data = schema.dump(account_created)
