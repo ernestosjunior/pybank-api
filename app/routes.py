@@ -33,6 +33,13 @@ def register_routes(app: Flask):
     )
 
     app.add_url_rule(
+        "/account",
+        "get_account",
+        jwt_required()(account_controller.get_account),
+        methods=["GET"],
+    )
+
+    app.add_url_rule(
         "/transactions",
         "create_transaction",
         jwt_required()(transaction_controller.create_transaction),

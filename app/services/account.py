@@ -42,3 +42,12 @@ def check_account(current_account: int) -> Account:
 def update_account_status(account: Account, status: bool):
     account.status = status
     db.session.commit()
+
+
+def get_account_by_person_id(person_id: int) -> Account:
+    account = Account.query.filter_by(person_id=person_id).first()
+
+    if not account:
+        raise NotFoundException("Account not found.")
+
+    return account

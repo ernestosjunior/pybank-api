@@ -1,11 +1,14 @@
 from flask import jsonify, request
+from flask_jwt_extended import get_jwt_identity
 from marshmallow import ValidationError
 from app.exceptions import NotFoundException, NotAllowedException
 from app.schemas.account import AccountSchema
+from app.schemas.transaction import TransactionSchema
 from app.services.account import (
     create_account_for_person,
     check_account,
     update_account_status,
+    get_account_by_person_id,
 )
 from sqlalchemy.exc import IntegrityError
 from app.services.auth import check_person
@@ -83,6 +86,35 @@ def block_account(account_id: int):
         account = check_account(account_id)
         update_account_status(account, False)
         return schema.dump(account), HTTP_STATUS_OK
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "error": "An error occurred.",
+                    "details": str(e),
+                }
+            ),
+            HTTP_STATUS_INTERNAL_SERVER_ERROR,
+        )
+
+
+def get_account():
+    schema = AccountSchema()
+    schema_transaction = TransactionSchema()
+    try:
+        person_id = get_jwt_identity()
+        account = get_account_by_person_id(person_id)
+
+        account_data = schema.dump(account)
+        account_data["transactions"] = [
+            schema_transaction.dump(t) for t in account.transactions
+        ]
+
+        return account_data, 200
+
+    except NotFoundException as nfe:
+        return jsonify({"error": nfe.message}), HTTP_STATUS_NOT_FOUND
+
     except Exception as e:
         return (
             jsonify(
