@@ -44,7 +44,4 @@ $ docker-compose -f docker-compose.prod.yml up -d
 
 ### 🚀 It's ready!
 
-### API docs
-
-https://api.postman.com/collections/11986523-f5a08366-f021-4d56-8eb9-fc65fc20a703?access_key=PMAT-01HJ4SWB2RG58G9QYJYH4EPE2F
 
