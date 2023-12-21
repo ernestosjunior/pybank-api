@@ -37,7 +37,7 @@ $ docker-compose -f docker-compose.yml up -d
 
 ### First Person:
 
-email: pessoainicial@pybank.com
+email: pessoainicial@pybank.com | 
 password: mudar123
 
 ### Running the app in production mode
