@@ -32,6 +32,14 @@ Execute the command to up containers:
 $ docker-compose -f docker-compose.yml up -d
 ```
 
+### If you are on a computer other than the Mac M1, you must remove the attr platform from the docker-compose.yml file
+<img width="1044" alt="Screenshot 2023-12-21 at 14 18 22" src="https://github.com/ernestosjunior/pybank-api/assets/54125328/a996047a-36fd-4d1d-af17-d01516087ce3">
+
+### First Person:
+
+email: pessoainicial@pybank.com
+password: mudar123
+
 ### Running the app in production mode
 
 You must have a MySQL instance created and included in the .env file.
@@ -44,7 +52,4 @@ $ docker-compose -f docker-compose.prod.yml up -d
 
 ### 🚀 It's ready!
 
-### API docs
-
-https://api.postman.com/collections/11986523-f5a08366-f021-4d56-8eb9-fc65fc20a703?access_key=PMAT-01HJ4SWB2RG58G9QYJYH4EPE2F
 
